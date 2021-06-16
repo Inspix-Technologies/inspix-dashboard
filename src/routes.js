@@ -23,6 +23,7 @@ import Rtl from "views/Rtl.js";
 import TableList from "views/TableList.js";
 import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
+import PredictPhoto from "views/PredictPhoto.js";
 
 var routes = [
   {
@@ -42,11 +43,11 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/map",
-    name: "Map",
+    path: "/predict",
+    name: "Predict",
     rtlName: "خرائط",
-    icon: "tim-icons icon-pin",
-    component: Map,
+    icon: "tim-icons icon-atom",
+    component: PredictPhoto,
     layout: "/admin",
   },
   {

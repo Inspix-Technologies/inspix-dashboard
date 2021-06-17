@@ -25,6 +25,7 @@ export default function PredictPhoto() {
     setApiRequest(
       JSON.stringify({base64image: `${base64img.slice(0, 100)}...`}, null, 2)
     );
+    setApiReturn("");
     axios
       .post("http://localhost:8001/inspix-models/test", {
         base64image: base64img,

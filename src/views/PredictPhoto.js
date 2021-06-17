@@ -4,6 +4,8 @@ import {Row, Col, Card, CardHeader, CardBody, Form, Button} from "reactstrap";
 import axios from "axios";
 import {convertToBase64} from "libs/base64/base64-preprocessor";
 import drawBoundingBox from "libs/bounding-box/bbox-creator";
+import SyntaxHighliter from "react-syntax-highlighter";
+import a11y from "react-syntax-highlighter/dist/esm/styles/hljs/night-owl";
 
 export default function PredictPhoto() {
   const uploadImageRef = useRef(null);
@@ -11,16 +13,22 @@ export default function PredictPhoto() {
   const imgRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const [imageUrl, setImageUrl] = useState();
+  const [apiReturn, setApiReturn] = useState("");
+  const [apiRequest, setApiRequest] = useState("");
 
   const handlePredictImage = (e) => {
     e.preventDefault();
     if (fileName === "") return;
     const base64img = convertToBase64(imgRef);
+    setApiRequest(
+      JSON.stringify({base64image: `${base64img.slice(0, 100)}...`}, null, 2)
+    );
     axios
       .post("http://localhost:8001/inspix-models/test", {
         base64image: base64img,
       })
       .then((res) => {
+        setApiReturn(res.data);
         drawBoundingBox(imgRef, canvasRef, res.data);
       })
       .catch((e) => {
@@ -54,8 +62,6 @@ export default function PredictPhoto() {
                     src={imageUrl}
                   ></img>
                   <canvas
-                    // height="1200"
-                    // width="1200"
                     style={{
                       position: "absolute",
                       top: 0,
@@ -99,16 +105,54 @@ export default function PredictPhoto() {
                         if (!e.target.files[0]) {
                           setImageUrl("");
                           setFileName("");
+                          setApiRequest("");
+                          setApiReturn("");
                           const ctx = canvasRef.current.getContext("2d");
                           ctx.clearRect(0, 0, 2000, 2000);
                           return;
                         }
+                        const ctx = canvasRef.current.getContext("2d");
+                        ctx.clearRect(0, 0, 2000, 2000);
                         setImageUrl(URL.createObjectURL(e.target.files[0]));
                         setFileName(e.target.value.replace(/.*[\/\\]/, ""));
                       }}
                       type="file"
                       accept="image/png, image/jpeg"
                     />
+                  </Col>
+                </Row>
+                <Row className="mt-5">
+                  <Col xs={12}>
+                    <h2>Demonstration</h2>
+                    <h5>API Request</h5>
+                    <div>
+                      <SyntaxHighliter
+                        wrapLines={true}
+                        language="json"
+                        style={a11y}
+                      >
+                        {apiRequest !== ""
+                          ? apiRequest
+                          : "please upload an image to see API request preview"}
+                      </SyntaxHighliter>
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col xs={12}>
+                    <h5>API Response</h5>
+                    <div
+                      style={{
+                        height: "20rem",
+                        overflowY: "scroll",
+                      }}
+                    >
+                      <SyntaxHighliter language="json" style={a11y}>
+                        {apiReturn !== ""
+                          ? JSON.stringify(apiReturn, null, 2)
+                          : "please upload an image to see API return preview"}
+                      </SyntaxHighliter>
+                    </div>
                   </Col>
                 </Row>
               </Form>

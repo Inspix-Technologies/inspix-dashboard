@@ -17,15 +17,15 @@
 */
 /*eslint-disable*/
 import React from "react";
-import { NavLink, Link, useLocation } from "react-router-dom";
+import {NavLink, Link, useLocation} from "react-router-dom";
 // nodejs library to set properties for components
-import { PropTypes } from "prop-types";
+import {PropTypes} from "prop-types";
 
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
 
 // reactstrap components
-import { Nav, NavLink as ReactstrapNavLink } from "reactstrap";
+import {Nav, NavLink as ReactstrapNavLink} from "reactstrap";
 import {
   BackgroundColorContext,
   backgroundColors,
@@ -57,7 +57,7 @@ function Sidebar(props) {
   const linkOnClick = () => {
     document.documentElement.classList.remove("nav-open");
   };
-  const { routes, rtlActive, logo } = props;
+  const {routes, rtlActive, logo} = props;
   let logoImg = null;
   let logoText = null;
   if (logo !== undefined) {
@@ -109,7 +109,7 @@ function Sidebar(props) {
   }
   return (
     <BackgroundColorContext.Consumer>
-      {({ color }) => (
+      {({color}) => (
         <div className="sidebar" data={color}>
           <div className="sidebar-wrapper" ref={sidebarRef}>
             {logoImg !== null || logoText !== null ? (
@@ -141,9 +141,9 @@ function Sidebar(props) {
                 );
               })}
               <li className="active-pro">
-                <ReactstrapNavLink href="https://www.creative-tim.com/product/black-dashboard-pro-react?ref=bdr-user-archive-sidebar-upgrade-pro">
+                <ReactstrapNavLink>
                   <i className="tim-icons icon-spaceship" />
-                  <p>Upgrade to PRO</p>
+                  <p>Contact Us</p>
                 </ReactstrapNavLink>
               </li>
             </Nav>

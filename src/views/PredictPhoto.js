@@ -1,5 +1,6 @@
 import React, {useRef, useState} from "react";
 import {Row, Col, Card, CardHeader, CardBody, Form, Button} from "reactstrap";
+import NotificationAlert from "react-notification-alert";
 
 import axios from "axios";
 import {convertToBase64} from "libs/base64/base64-preprocessor";
@@ -11,6 +12,7 @@ export default function PredictPhoto() {
   const uploadImageRef = useRef(null);
   const canvasRef = useRef(null);
   const imgRef = useRef(null);
+  const notificationRef = useRef(null);
   const [fileName, setFileName] = useState("");
   const [imageUrl, setImageUrl] = useState();
   const [apiReturn, setApiReturn] = useState("");
@@ -32,12 +34,24 @@ export default function PredictPhoto() {
         drawBoundingBox(imgRef, canvasRef, res.data);
       })
       .catch((e) => {
-        console.error(e.response);
+        notificationRef.current.notificationAlert({
+          place: "br",
+          type: "danger",
+          autoDismiss: 7,
+          message: (
+            <div>
+              <div>An error occured on sending API</div>
+            </div>
+          ),
+        });
       });
   };
 
   return (
     <div className="content">
+      <div className="react-notification-alert-container">
+        <NotificationAlert ref={notificationRef} />
+      </div>
       <Row>
         <Col xs={12}>
           <Card>
@@ -143,7 +157,7 @@ export default function PredictPhoto() {
                     <h5>API Response</h5>
                     <div
                       style={{
-                        height: "20rem",
+                        maxHeight: "20rem",
                         overflowY: "scroll",
                       }}
                     >

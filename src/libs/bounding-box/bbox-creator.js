@@ -1,4 +1,5 @@
-import preprocessBoundingBox from "./bbox-preprocessor";
+import preprocessBoundingBox from "./bbox-offset-creator";
+// import preprocessBoundingBox from "./bbox-preprocessor";
 
 const colorMap = {
   0: "#fff719",
@@ -13,15 +14,23 @@ const drawBoundingBox = (imgRef, canvasRef, predictions) => {
   const font = "16px sans-serif";
   ctx.font = font;
   ctx.textBaseline = "top";
-  canvasRef.current.width = imgRef.current.width * 1.1;
-  canvasRef.current.height = imgRef.current.height * 1.1;
+  canvasRef.current.width = imgRef.current.width;
+  canvasRef.current.height = imgRef.current.height;
   predictions.map((detection) => {
+    if (detection["confidence"] < 0.5) return;
+
     const {xmin, ymin, xmax, ymax} = detection;
+    const yminRelative = ymin / imgRef.current.naturalHeight;
+    const xminRelative = xmin / imgRef.current.naturalWidth;
+    const ymaxRelative = ymax / imgRef.current.naturalHeight;
+    const xmaxRelative = xmax / imgRef.current.naturalWidth;
 
     const {x, y, width, height} = preprocessBoundingBox(
-      [ymin, xmin, ymax, xmax],
+      [yminRelative, xminRelative, ymaxRelative, xmaxRelative],
       imgRef
     );
+
+    // console.log(yminRelative, xminRelative, ymaxRelative, xmaxRelative);
 
     const color = colorMap[detection["class"]];
     ctx.strokeStyle = color;

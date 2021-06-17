@@ -130,6 +130,8 @@ export default function PredictPhoto() {
                         ctx.clearRect(0, 0, 2000, 2000);
                         setImageUrl(URL.createObjectURL(e.target.files[0]));
                         setFileName(e.target.value.replace(/.*[\/\\]/, ""));
+                        setApiRequest("");
+                        setApiReturn("");
                       }}
                       type="file"
                       accept="image/png, image/jpeg"

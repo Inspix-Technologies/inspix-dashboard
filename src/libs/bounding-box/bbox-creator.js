@@ -17,7 +17,7 @@ const drawBoundingBox = (imgRef, canvasRef, predictions) => {
   canvasRef.current.width = imgRef.current.width;
   canvasRef.current.height = imgRef.current.height;
   predictions.map((detection) => {
-    if (detection["confidence"] < 0.5) return;
+    // if (detection["confidence"] < 0.5) return;
 
     const {xmin, ymin, xmax, ymax} = detection;
     const yminRelative = ymin / imgRef.current.naturalHeight;
@@ -38,20 +38,11 @@ const drawBoundingBox = (imgRef, canvasRef, predictions) => {
     ctx.strokeRect(x, y, width, height);
 
     ctx.fillStyle = color;
-    const textWidth = ctx.measureText(
-      detection["name"] + " " + (100 * detection["confidence"]).toFixed(2) + "%"
-    ).width;
+    const textWidth = ctx.measureText(detection["name"]).width;
     const textHeight = parseInt(font, 10); // base 10
     ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
     ctx.fillStyle = "#fff";
-    ctx.fillText(
-      detection["name"] +
-        " " +
-        (100 * detection["confidence"]).toFixed(2) +
-        "%",
-      x,
-      y + 10
-    );
+    ctx.fillText(detection["name"], x, y + 10);
   });
 };
 

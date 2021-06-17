@@ -1,5 +1,11 @@
 import preprocessBoundingBox from "./bbox-preprocessor";
 
+const colorMap = {
+  0: "#fff719",
+  1: "#0bde00",
+  2: "#ff1717",
+};
+
 const drawBoundingBox = (imgRef, canvasRef, predictions) => {
   const ctx = canvasRef.current.getContext("2d");
   ctx.clearRect(0, 0, 2000, 2000);
@@ -17,7 +23,7 @@ const drawBoundingBox = (imgRef, canvasRef, predictions) => {
       imgRef
     );
 
-    const color = "#eee";
+    const color = colorMap[detection["class"]];
     ctx.strokeStyle = color;
     ctx.lineWidth = 4;
     ctx.strokeRect(x, y, width, height);
@@ -28,7 +34,7 @@ const drawBoundingBox = (imgRef, canvasRef, predictions) => {
     ).width;
     const textHeight = parseInt(font, 10); // base 10
     ctx.fillRect(x, y, textWidth + 4, textHeight + 4);
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = "#fff";
     ctx.fillText(
       detection["name"] +
         " " +

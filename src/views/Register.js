@@ -11,8 +11,36 @@ import {
   Button,
 } from "reactstrap";
 import {Link} from "react-router-dom";
+import {useFormik} from "formik";
+import * as Yup from "yup";
 
 export default function Login() {
+  const schema = Yup.object().shape({
+    name: Yup.string().required("this field cannot be empty"),
+    username: Yup.string().required("this field cannot be empty"),
+    password: Yup.string().required("this field cannot be empty"),
+    passwordConfirm: Yup.string()
+      .required("this field cannot be empty")
+      .oneOf([Yup.ref("password")], "Password didn't match"),
+  });
+
+  const initialValues = {
+    name: "",
+    username: "",
+    password: "",
+    passwordConfirm: "",
+  };
+
+  const formik = useFormik({
+    initialValues,
+    validationSchema: schema,
+    // validateOnChange: false,
+    // validateOnBlur: false,
+    onSubmit: ({name, username, password}) => {
+      console.log(name, username, password);
+    },
+  });
+
   return (
     <div className="content">
       <Row className="justify-content-center">
@@ -22,16 +50,21 @@ export default function Login() {
               <h2 className="title">Register</h2>
             </CardHeader>
             <CardBody>
-              <Form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                }}
-              >
+              <Form onSubmit={formik.handleSubmit}>
                 <Row>
                   <Col>
                     <FormGroup>
                       <label>Name</label>
-                      <Input placeholder="Name" type="text" />
+                      <Input
+                        id="name"
+                        name="name"
+                        onChange={formik.handleChange}
+                        placeholder="Name"
+                        type="text"
+                        value={formik.values.name}
+                        invalid={formik.errors.name}
+                      />
+                      <p className="mt-n3 text-warning">{formik.errors.name}</p>
                     </FormGroup>
                   </Col>
                 </Row>
@@ -39,7 +72,22 @@ export default function Login() {
                   <Col>
                     <FormGroup>
                       <label>Username</label>
-                      <Input placeholder="Username" type="text" />
+                      <Input
+                        id="username"
+                        name="username"
+                        onChange={(e) => {
+                          e.target.value = e.target.value.toLowerCase().trim();
+                          console.log(formik.errors);
+                          formik.handleChange(e);
+                        }}
+                        invalid={formik.errors.username}
+                        placeholder="Username"
+                        type="text"
+                        value={formik.values.username}
+                      />
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.username}
+                      </p>
                     </FormGroup>
                   </Col>
                 </Row>
@@ -47,7 +95,37 @@ export default function Login() {
                   <Col>
                     <FormGroup>
                       <label>Password</label>
-                      <Input placeholder="Password" type="password" />
+                      <Input
+                        id="password"
+                        name="password"
+                        onChange={formik.handleChange}
+                        placeholder="Password"
+                        type="password"
+                        invalid={formik.errors.password}
+                        value={formik.values.password}
+                      />
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.password}
+                      </p>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label>Confirm Password</label>
+                      <Input
+                        id="passwordConfirm"
+                        name="passwordConfirm"
+                        onChange={formik.handleChange}
+                        placeholder="Confirm Password"
+                        type="password"
+                        invalid={formik.errors.passwordConfirm}
+                        value={formik.values.passwordConfirm}
+                      />
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.passwordConfirm}
+                      </p>
                     </FormGroup>
                   </Col>
                 </Row>

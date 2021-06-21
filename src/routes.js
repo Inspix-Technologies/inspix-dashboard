@@ -25,6 +25,7 @@ import Typography from "views/Typography.js";
 import UserProfile from "views/UserProfile.js";
 import PredictPhoto from "views/PredictPhoto.js";
 import ComingSoon from "views/ComingSoon";
+import Register from "views/Register";
 
 var routes = [
   {
@@ -65,6 +66,14 @@ var routes = [
     rtlName: "خرائط",
     icon: "tim-icons icon-notes",
     component: ComingSoon,
+    layout: "/admin",
+  },
+  {
+    path: "/register",
+    name: "Register",
+    rtlName: "خرائط",
+    icon: "tim-icons icon-notes",
+    component: Register,
     layout: "/admin",
   },
 ];

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   Row,
   Col,
@@ -10,11 +10,14 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 export default function Login() {
+  const history = useHistory();
+
   const schema = Yup.object().shape({
     name: Yup.string().required("this field cannot be empty"),
     username: Yup.string().required("this field cannot be empty"),
@@ -34,10 +37,26 @@ export default function Login() {
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
-    // validateOnChange: false,
-    // validateOnBlur: false,
-    onSubmit: ({name, username, password}) => {
-      console.log(name, username, password);
+    validateOnBlur: true,
+    validateOnChange: true,
+    onSubmit: ({name, username, password}, {setErrors}) => {
+      axios
+        .post("http://localhost:8001/api/users", {
+          name,
+          username,
+          password,
+        })
+        .then(() => {
+          history.replace("/admin/detect/mask");
+        })
+        .catch((e) => {
+          if (!e.response) return;
+          const errors = e.response.data.reduce(
+            (prev, curr) => ({...prev, [curr.path]: curr.message}),
+            [{}]
+          );
+          setErrors(errors);
+        });
     },
   });
 
@@ -50,7 +69,7 @@ export default function Login() {
               <h2 className="title">Register</h2>
             </CardHeader>
             <CardBody>
-              <Form onSubmit={formik.handleSubmit}>
+              <Form onSubmit={formik.handleSubmit} autoComplete="off">
                 <Row>
                   <Col>
                     <FormGroup>

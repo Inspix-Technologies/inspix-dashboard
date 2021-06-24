@@ -99,7 +99,6 @@ export default function Login() {
                         name="username"
                         onChange={(e) => {
                           e.target.value = e.target.value.toLowerCase().trim();
-                          console.log(formik.errors);
                           formik.handleChange(e);
                         }}
                         invalid={formik.errors.username}

@@ -31,11 +31,6 @@ export default function Login() {
     password: "",
   };
 
-  useEffect(() => {
-    console.log("hello");
-    console.log(userData);
-  }, [userData]);
-
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
@@ -83,7 +78,6 @@ export default function Login() {
                         name="username"
                         onChange={(e) => {
                           e.target.value = e.target.value.toLowerCase().trim();
-                          console.log(formik.errors);
                           formik.handleChange(e);
                         }}
                         invalid={formik.errors.username}

@@ -40,12 +40,13 @@ import {
 } from "reactstrap";
 import {useUserData} from "providers/UserProvider";
 import {useHistory, Link} from "react-router-dom";
+import axios from "axios";
 
 function AdminNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
-  const [userData] = useUserData();
+  const [userData, setUserData] = useUserData();
   const history = useHistory();
   React.useEffect(() => {
     window.addEventListener("resize", updateColor);
@@ -75,6 +76,25 @@ function AdminNavbar(props) {
   const toggleModalSearch = () => {
     setmodalSearch(!modalSearch);
   };
+
+  const logout = async () => {
+    const refreshToken = localStorage.getItem("rt");
+    if (!refreshToken) return;
+    axios
+      .post("http://localhost:8001/api/users/logout", {
+        refreshToken: refreshToken,
+      })
+      .then(() => {
+        localStorage.removeItem("rt");
+        setUserData({});
+        history.push("/admin/login");
+      })
+      .catch((e) => {
+        if (!e.response) return;
+        console.error(e.response);
+      });
+  };
+
   return (
     <>
       <Navbar className={classNames("navbar-absolute", color)} expand="lg">
@@ -120,7 +140,9 @@ function AdminNavbar(props) {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
                     <NavLink tag="li">
-                      <DropdownItem className="nav-item">Logout</DropdownItem>
+                      <DropdownItem className="nav-item" onClick={logout}>
+                        Logout
+                      </DropdownItem>
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>

@@ -17,7 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 
 import AdminLayout from "layouts/Admin/Admin.js";
 import RTLLayout from "layouts/RTL/RTL.js";
@@ -29,16 +29,22 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
+import UserProvider from "providers/UserProvider";
 
 ReactDOM.render(
   <ThemeContextWrapper>
     <BackgroundColorWrapper>
       <BrowserRouter>
-        <Switch>
-          <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-          <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
-          <Redirect from="/" to="/admin/dashboard" />
-        </Switch>
+        <UserProvider>
+          <Switch>
+            <Route
+              path="/admin"
+              render={(props) => <AdminLayout {...props} />}
+            />
+            <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
+            <Redirect from="/" to="/admin/dashboard" />
+          </Switch>
+        </UserProvider>
       </BrowserRouter>
     </BackgroundColorWrapper>
   </ThemeContextWrapper>,

@@ -39,12 +39,14 @@ import {
   ModalHeader,
 } from "reactstrap";
 import {useUserData} from "providers/UserProvider";
+import {useHistory, Link} from "react-router-dom";
 
 function AdminNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
   const [userData] = useUserData();
+  const history = useHistory();
   React.useEffect(() => {
     window.addEventListener("resize", updateColor);
     // Specify how to clean up after this effect:
@@ -100,11 +102,29 @@ function AdminNavbar(props) {
           </NavbarToggler>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              <InputGroup className="search-bar">
-                <Button color="link" onClick={toggleModalSearch}>
-                  <p>{userData.name}</p>
-                </Button>
-              </InputGroup>
+              {!userData.username ? (
+                <InputGroup className="search-bar">
+                  <Link to="/admin/login">
+                    <Button color="success">Login</Button>
+                  </Link>
+                </InputGroup>
+              ) : (
+                <UncontrolledDropdown nav>
+                  <DropdownToggle
+                    caret
+                    color="default"
+                    data-toggle="dropdown"
+                    nav
+                  >
+                    <p>{userData.name}</p>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-navbar" right tag="ul">
+                    <NavLink tag="li">
+                      <DropdownItem className="nav-item">Logout</DropdownItem>
+                    </NavLink>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              )}
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret

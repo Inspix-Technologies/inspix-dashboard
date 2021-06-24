@@ -75,6 +75,7 @@ var routes = [
     icon: "tim-icons icon-notes",
     component: Login,
     layout: "/admin",
+    hide: true,
   },
   {
     path: "/register",
@@ -83,6 +84,7 @@ var routes = [
     icon: "tim-icons icon-notes",
     component: Register,
     layout: "/admin",
+    hide: true,
   },
 ];
 export default routes;

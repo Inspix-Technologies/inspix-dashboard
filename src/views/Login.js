@@ -59,6 +59,11 @@ export default function Login() {
     },
   });
 
+  useEffect(() => {
+    if (!userData.username) return;
+    history.push("/admin/detect/mask");
+  }, [userData]);
+
   return (
     <div className="content">
       <Row className="justify-content-center">

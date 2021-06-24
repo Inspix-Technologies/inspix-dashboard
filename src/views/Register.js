@@ -18,7 +18,7 @@ import {useUserData} from "providers/UserProvider";
 
 export default function Login() {
   const history = useHistory();
-  const [_, setUserData] = useUserData();
+  const [userData, setUserData] = useUserData();
   const schema = Yup.object().shape({
     name: Yup.string().required("this field cannot be empty"),
     username: Yup.string().required("this field cannot be empty"),
@@ -62,6 +62,11 @@ export default function Login() {
         });
     },
   });
+
+  useEffect(() => {
+    if (!userData.username) return;
+    history.push("/admin/detect/mask");
+  }, [userData]);
 
   return (
     <div className="content">

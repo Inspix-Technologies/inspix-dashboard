@@ -38,11 +38,13 @@ import {
   NavbarToggler,
   ModalHeader,
 } from "reactstrap";
+import {useUserData} from "providers/UserProvider";
 
 function AdminNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
+  const [userData] = useUserData();
   React.useEffect(() => {
     window.addEventListener("resize", updateColor);
     // Specify how to clean up after this effect:
@@ -98,12 +100,11 @@ function AdminNavbar(props) {
           </NavbarToggler>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              {/* <InputGroup className="search-bar">
+              <InputGroup className="search-bar">
                 <Button color="link" onClick={toggleModalSearch}>
-                  <i className="tim-icons icon-zoom-split" />
-                  <span className="d-lg-none d-md-block">Search</span>
+                  <p>{userData.name}</p>
                 </Button>
-              </InputGroup> */}
+              </InputGroup>
               <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret

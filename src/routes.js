@@ -26,6 +26,7 @@ import UserProfile from "views/UserProfile.js";
 import PredictPhoto from "views/PredictPhoto.js";
 import ComingSoon from "views/ComingSoon";
 import Register from "views/Register";
+import Login from "views/Login";
 
 var routes = [
   {
@@ -66,6 +67,13 @@ var routes = [
     rtlName: "خرائط",
     icon: "tim-icons icon-notes",
     component: ComingSoon,
+    layout: "/admin",
+  },
+  {
+    path: "/login",
+    name: "Login",
+    icon: "tim-icons icon-notes",
+    component: Login,
     layout: "/admin",
   },
   {

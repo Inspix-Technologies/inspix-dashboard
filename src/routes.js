@@ -27,6 +27,7 @@ import PredictPhoto from "views/PredictPhoto.js";
 import ComingSoon from "views/ComingSoon";
 import Register from "views/Register";
 import Login from "views/Login";
+import NewCamera from "views/cameras/NewCamera";
 
 var routes = [
   {
@@ -59,6 +60,13 @@ var routes = [
     rtlName: "خرائط",
     icon: "tim-icons icon-atom",
     component: ComingSoon,
+    layout: "/admin",
+  },
+  {
+    path: "/manage/cameras/new",
+    name: "New Camera",
+    hide: true,
+    component: NewCamera,
     layout: "/admin",
   },
   {

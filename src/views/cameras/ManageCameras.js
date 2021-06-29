@@ -34,20 +34,22 @@ export default function ManageCameras() {
                 ) : (
                   cameras.map((camera, i) => (
                     <Col xs={4}>
-                      <Card key={i}>
-                        <CardImg
-                          top
-                          height={200}
-                          style={{objectFit: "cover"}}
-                          src={`${process.env.PUBLIC_URL}/assets/inspix-new-01.jpg`}
-                        />
-                        <CardBody>
-                          <CardTitle>{camera.name}</CardTitle>
-                          <CardText className="font-italic">
-                            {camera.source}
-                          </CardText>
-                        </CardBody>
-                      </Card>
+                      <Link to={`/admin/cameras/${camera.id}`}>
+                        <Card key={i}>
+                          <CardImg
+                            top
+                            height={200}
+                            style={{objectFit: "cover"}}
+                            src={`${process.env.PUBLIC_URL}/assets/inspix-new-01.jpg`}
+                          />
+                          <CardBody>
+                            <CardTitle>{camera.name}</CardTitle>
+                            <CardText className="font-italic">
+                              {camera.source}
+                            </CardText>
+                          </CardBody>
+                        </Card>
+                      </Link>
                     </Col>
                   ))
                 )}

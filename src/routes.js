@@ -29,6 +29,7 @@ import Register from "views/Register";
 import Login from "views/Login";
 import NewCamera from "views/cameras/NewCamera";
 import ManageCameras from "views/cameras/ManageCameras";
+import WatchCamera from "views/cameras/WatchCamera";
 
 var routes = [
   {
@@ -76,6 +77,14 @@ var routes = [
     rtlName: "خرائط",
     icon: "tim-icons icon-notes",
     component: ManageCameras,
+    layout: "/admin",
+  },
+  {
+    path: "/cameras/:id",
+    name: "Watch Camera",
+    rtlName: "خرائط",
+    hide: true,
+    component: WatchCamera,
     layout: "/admin",
   },
   {

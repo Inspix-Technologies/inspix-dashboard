@@ -28,6 +28,7 @@ import ComingSoon from "views/ComingSoon";
 import Register from "views/Register";
 import Login from "views/Login";
 import NewCamera from "views/cameras/NewCamera";
+import ManageCameras from "views/cameras/ManageCameras";
 
 var routes = [
   {
@@ -74,7 +75,7 @@ var routes = [
     name: "Manage Cameras",
     rtlName: "خرائط",
     icon: "tim-icons icon-notes",
-    component: ComingSoon,
+    component: ManageCameras,
     layout: "/admin",
   },
   {

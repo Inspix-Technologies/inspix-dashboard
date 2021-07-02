@@ -15,11 +15,11 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, {useEffect, useState} from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // react plugin used to create charts
-import { Line, Bar } from "react-chartjs-2";
+import {Line, Bar} from "react-chartjs-2";
 
 // reactstrap components
 import {
@@ -49,9 +49,91 @@ import {
   chartExample3,
   chartExample4,
 } from "variables/charts.js";
+import useAnalyticData from "libs/inspix-analytic/useAnalyticData";
 
 function Dashboard(props) {
   const [bigChartData, setbigChartData] = React.useState("data1");
+  const [dataset, setDataset] = useState([]);
+  const analyticsData = useAnalyticData([1, 2, 12, 5]);
+  useEffect(() => {
+    const refinedData = (gradientStroke) => ({
+      labels: [...new Set(analyticsData.map((data) => data.predictionDate))],
+      datasets: [
+        {
+          label: "Incorrect",
+          fill: true,
+          backgroundColor: gradientStroke,
+          borderColor: "#1f8ef1",
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBackgroundColor: "#1f8ef1",
+          pointBorderColor: "rgba(255,255,255,0)",
+          pointHoverBackgroundColor: "#1f8ef1",
+          pointBorderWidth: 20,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 15,
+          pointRadius: 4,
+          data: analyticsData
+            .filter((data) => data.status === 0)
+            .map((data) => data.count),
+        },
+        {
+          label: "Mask",
+          fill: true,
+          backgroundColor: gradientStroke,
+          borderColor: "#1f8ef1",
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBackgroundColor: "#1f8ef1",
+          pointBorderColor: "rgba(255,255,255,0)",
+          pointHoverBackgroundColor: "#1f8ef1",
+          pointBorderWidth: 20,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 15,
+          pointRadius: 4,
+          data: analyticsData
+            .filter((data) => data.status === 1)
+            .map((data) => data.count),
+        },
+        {
+          label: "No Mask",
+          fill: true,
+          backgroundColor: gradientStroke,
+          borderColor: "#1f8ef1",
+          borderWidth: 2,
+          borderDash: [],
+          borderDashOffset: 0.0,
+          pointBackgroundColor: "#1f8ef1",
+          pointBorderColor: "rgba(255,255,255,0)",
+          pointHoverBackgroundColor: "#1f8ef1",
+          pointBorderWidth: 20,
+          pointHoverRadius: 4,
+          pointHoverBorderWidth: 15,
+          pointRadius: 4,
+          data: analyticsData
+            .filter((data) => data.status === 2)
+            .map((data) => data.count),
+        },
+      ],
+    });
+    console.log(refinedData);
+    setDataset(() => (canvas) => {
+      console.log(canvas);
+      if (!canvas) return;
+      let ctx = canvas.getContext("2d");
+
+      let gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
+
+      gradientStroke.addColorStop(1, "rgba(29,140,248,0.2)");
+      gradientStroke.addColorStop(0.4, "rgba(29,140,248,0.0)");
+      gradientStroke.addColorStop(0, "rgba(29,140,248,0)"); //blue colors
+
+      return refinedData(gradientStroke);
+    });
+  }, [analyticsData]);
+
   const setBgChartData = (name) => {
     setbigChartData(name);
   };
@@ -129,10 +211,7 @@ function Dashboard(props) {
               </CardHeader>
               <CardBody>
                 <div className="chart-area">
-                  <Line
-                    data={chartExample1[bigChartData]}
-                    options={chartExample1.options}
-                  />
+                  <Line data={dataset} options={chartExample1.options} />
                 </div>
               </CardBody>
             </Card>

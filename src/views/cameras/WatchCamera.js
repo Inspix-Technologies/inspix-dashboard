@@ -35,7 +35,7 @@ export default function WatchCamera() {
                     <ReactHlsPlayer
                       src={camera.source}
                       autoPlay={true}
-                      controls={true}
+                      controls={false}
                       width={camera.width}
                       height={camera.height}
                     />

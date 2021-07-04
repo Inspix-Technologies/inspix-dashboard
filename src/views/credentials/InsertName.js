@@ -1,6 +1,6 @@
 import {Formik} from "formik";
-import {useUserToken} from "../../providers/UserProvider";
-import React, {useEffect, useState} from "react";
+import {useUserData, useUserToken} from "../../providers/UserProvider";
+import React, {useEffect} from "react";
 import * as Yup from "yup";
 import {
   Row,
@@ -13,14 +13,18 @@ import {
   FormGroup,
   Button,
 } from "reactstrap";
+import UserAPI from "../../libs/user-authentication/UserAPI";
+import {useHistory} from "react-router-dom";
 
 export default function InsertName() {
   const [isLoggedIn, userToken] = useUserToken();
+  const [_, setUserData] = useUserData();
+  const history = useHistory();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This field cannot be empty"),
   });
-
+  //TODO: redirect if user data exists
   useEffect(() => {
     if (isLoggedIn === null) return console.log(1);
     if (isLoggedIn === false) return console.log(2);
@@ -41,6 +45,14 @@ export default function InsertName() {
               <Formik
                 initialValues={{name: ""}}
                 validationSchema={validationSchema}
+                onSubmit={({name}) => {
+                  UserAPI.setUserName(name)
+                    .then((res) => {
+                      setUserData(res.data);
+                      history.replace("/admin/dashboard");
+                    })
+                    .catch((e) => console.error(e));
+                }}
               >
                 {(props) => (
                   <Form onSubmit={props.handleSubmit}>
@@ -61,10 +73,12 @@ export default function InsertName() {
                         </FormGroup>
                       </Col>
                     </Row>
+                    <Button type="submit" color="success">
+                      Submit
+                    </Button>
                   </Form>
                 )}
               </Formik>
-              <Button color="success">Submit</Button>
               <p className="m-0 mt-3">
                 You are logged in as
                 <strong>

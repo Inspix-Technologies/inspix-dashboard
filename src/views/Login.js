@@ -14,55 +14,46 @@ import {Link, useHistory} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import {useUserData} from "providers/UserProvider";
+import {useUserToken} from "providers/UserProvider";
+import {useAppData} from "providers/UserProvider";
 
 export default function Login() {
-  const [userData, setUserData] = useUserData();
+  const [isLoggedIn] = useUserToken();
+  const app = useAppData();
 
   const history = useHistory();
 
   const schema = Yup.object().shape({
-    username: Yup.string().required("this field cannot be empty"),
+    email: Yup.string()
+      .required("this field cannot be empty")
+      .email("please input a valid email"),
     password: Yup.string().required("this field cannot be empty"),
   });
 
   const initialValues = {
-    username: "",
+    email: "",
     password: "",
   };
+
+  useEffect(() => {
+    if (isLoggedIn === null) return;
+    if (isLoggedIn === true) history.replace("/admin/dashboard");
+  }, [isLoggedIn]);
 
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
     validateOnBlur: true,
     validateOnChange: true,
-    onSubmit: ({username, password}, {setErrors}) => {
-      axios
-        .post("http://localhost:8001/api/users/login", {
-          username,
-          password,
-        })
-        .then((e) => {
-          localStorage.setItem("rt", e.data.refreshToken);
-          setUserData(e.data.user);
-          history.replace("/admin/detect/mask");
-        })
+    onSubmit: ({email, password}, {setErrors}) => {
+      app
+        .auth()
+        .signInWithEmailAndPassword(email, password)
         .catch((e) => {
-          if (!e.response) return;
-          console.error(e.response);
-          const errors = e.response.data.reduce(
-            (prev, curr) => ({...prev, [curr.path]: curr.message}),
-            [{}]
-          );
-          setErrors(errors);
+          console.error(e);
         });
     },
   });
-
-  useEffect(() => {
-    if (!userData.username) return;
-    history.push("/admin/detect/mask");
-  }, [userData]);
 
   return (
     <div className="content">
@@ -77,21 +68,21 @@ export default function Login() {
                 <Row>
                   <Col>
                     <FormGroup>
-                      <label>Username</label>
+                      <label>Email</label>
                       <Input
-                        id="username"
-                        name="username"
+                        id="email"
+                        name="email"
                         onChange={(e) => {
                           e.target.value = e.target.value.toLowerCase().trim();
                           formik.handleChange(e);
                         }}
-                        invalid={formik.errors.username}
-                        placeholder="Username"
+                        invalid={formik.errors.email}
+                        placeholder="email"
                         type="text"
-                        value={formik.values.username}
+                        value={formik.values.email}
                       />
                       <p className="mt-n3 text-warning">
-                        {formik.errors.username}
+                        {formik.errors.email}
                       </p>
                     </FormGroup>
                   </Col>

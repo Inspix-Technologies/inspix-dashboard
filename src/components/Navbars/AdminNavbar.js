@@ -40,13 +40,14 @@ import {
 } from "reactstrap";
 import {useUserData} from "providers/UserProvider";
 import {useHistory, Link} from "react-router-dom";
-import axios from "axios";
+import {useAppData} from "providers/UserProvider";
 
 function AdminNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
   const [modalSearch, setmodalSearch] = React.useState(false);
   const [color, setcolor] = React.useState("navbar-transparent");
-  const [userData, setUserData] = useUserData();
+  const app = useAppData();
+  const [userData] = useUserData();
   const history = useHistory();
   React.useEffect(() => {
     window.addEventListener("resize", updateColor);
@@ -78,21 +79,12 @@ function AdminNavbar(props) {
   };
 
   const logout = async () => {
-    const refreshToken = localStorage.getItem("rt");
-    if (!refreshToken) return;
-    axios
-      .post("http://localhost:8001/api/users/logout", {
-        refreshToken: refreshToken,
-      })
-      .then(() => {
-        localStorage.removeItem("rt");
-        setUserData({});
-        history.push("/admin/login");
-      })
-      .catch((e) => {
-        if (!e.response) return;
-        console.error(e.response);
-      });
+    try {
+      await app.auth().signOut();
+      history.push("/admin/login");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -122,7 +114,7 @@ function AdminNavbar(props) {
           </NavbarToggler>
           <Collapse navbar isOpen={collapseOpen}>
             <Nav className="ml-auto" navbar>
-              {!userData.username ? (
+              {!userData.name ? (
                 <InputGroup className="search-bar">
                   <Link to="/admin/login">
                     <Button color="success">Login</Button>

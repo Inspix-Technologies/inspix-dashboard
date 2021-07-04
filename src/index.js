@@ -29,7 +29,8 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
-import UserProvider from "providers/UserProvider";
+import UserProvider from "./providers/UserProvider";
+import InsertName from "views/credentials/InsertName";
 
 ReactDOM.render(
   <ThemeContextWrapper>
@@ -42,6 +43,10 @@ ReactDOM.render(
               render={(props) => <AdminLayout {...props} />}
             />
             <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
+            <Route
+              path="/insert-name"
+              render={(props) => <InsertName {...props} />}
+            />
             <Redirect from="/" to="/admin/dashboard" />
           </Switch>
         </UserProvider>

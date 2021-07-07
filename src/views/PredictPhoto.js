@@ -7,6 +7,8 @@ import {convertToBase64} from "libs/base64/base64-preprocessor";
 import drawBoundingBox from "libs/bounding-box/bbox-creator";
 import SyntaxHighliter from "react-syntax-highlighter";
 import a11y from "react-syntax-highlighter/dist/esm/styles/hljs/night-owl";
+import {useUserToken} from "providers/UserProvider";
+import {Redirect} from "react-router-dom";
 
 export default function PredictPhoto() {
   const uploadImageRef = useRef(null);
@@ -17,6 +19,7 @@ export default function PredictPhoto() {
   const [imageUrl, setImageUrl] = useState();
   const [apiReturn, setApiReturn] = useState("");
   const [apiRequest, setApiRequest] = useState("");
+  const [isLoggedIn, userToken] = useUserToken();
 
   const handlePredictImage = (e) => {
     e.preventDefault();
@@ -47,6 +50,14 @@ export default function PredictPhoto() {
         });
       });
   };
+
+  if (isLoggedIn === null)
+    return (
+      <div className="content d-flex align-items-center justify-content-center">
+        <p>loading</p>
+      </div>
+    );
+  if (isLoggedIn === false) return <Redirect to="/admin/login" />;
 
   return (
     <div className="content">

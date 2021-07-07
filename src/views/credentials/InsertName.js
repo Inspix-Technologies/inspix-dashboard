@@ -1,5 +1,9 @@
 import {Formik} from "formik";
-import {useUserData, useUserToken} from "../../providers/UserProvider";
+import {
+  useAppData,
+  useUserData,
+  useUserToken,
+} from "../../providers/UserProvider";
 import React, {useEffect} from "react";
 import * as Yup from "yup";
 import {
@@ -14,12 +18,13 @@ import {
   Button,
 } from "reactstrap";
 import UserAPI from "../../libs/user-authentication/UserAPI";
-import {useHistory} from "react-router-dom";
+import {useHistory, Redirect} from "react-router-dom";
 
 export default function InsertName() {
   const [isLoggedIn, userToken] = useUserToken();
   const [_, setUserData] = useUserData();
   const history = useHistory();
+  const app = useAppData();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("This field cannot be empty"),
@@ -32,6 +37,7 @@ export default function InsertName() {
   }, [isLoggedIn]);
 
   if (isLoggedIn === null) return <p>loading</p>;
+  if (isLoggedIn === false) return <Redirect to="/admin/dashboard" />;
 
   return (
     <div className="content overflow-hidden">
@@ -85,7 +91,14 @@ export default function InsertName() {
                   <i> {userToken.email}</i>
                 </strong>
               </p>
-              <Button className="btn-link text-left p-0 m-0" color="danger">
+              <Button
+                onClick={() => {
+                  app.auth().signOut();
+                  history.replace("/admin/dashboard");
+                }}
+                className="btn-link text-left p-0 m-0"
+                color="danger"
+              >
                 Not you? Click here to Logout
               </Button>
             </CardBody>

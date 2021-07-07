@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect} from "react";
 import {
   Row,
   Col,
@@ -13,7 +13,6 @@ import {
 import {Link, useHistory} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import {useUserToken} from "providers/UserProvider";
 import {useAppData} from "providers/UserProvider";
 
@@ -51,6 +50,12 @@ export default function Login() {
         .signInWithEmailAndPassword(email, password)
         .catch((e) => {
           console.error(e);
+          if (e.code === "auth/user-not-found") {
+            setErrors({
+              email: "username or password is incorrect",
+              password: "username or password is incorrect",
+            });
+          }
         });
     },
   });

@@ -37,7 +37,7 @@ var routes = [
     name: "Dashboard",
     rtlName: "لوحة القيادة",
     icon: "tim-icons icon-chart-pie-36",
-    component: Dashboard,
+    component: ComingSoon,
     layout: "/admin",
   },
   {
@@ -68,7 +68,7 @@ var routes = [
     path: "/manage/cameras/new",
     name: "New Camera",
     hide: true,
-    component: NewCamera,
+    component: ComingSoon,
     layout: "/admin",
   },
   {
@@ -76,7 +76,7 @@ var routes = [
     name: "Manage Cameras",
     rtlName: "خرائط",
     icon: "tim-icons icon-notes",
-    component: ManageCameras,
+    component: ComingSoon,
     layout: "/admin",
   },
   {

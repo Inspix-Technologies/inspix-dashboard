@@ -150,8 +150,8 @@ export default function Login() {
                         type="select"
                         onChange={formik.handleChange}
                       >
-                        <option>Technology</option>
-                        <option>Tech Startup</option>
+                        <option>Technology / Startup</option>
+                        <option>Government</option>
                         <option>Goods & Services</option>
                         <option>Tourism</option>
                         <option>Cullinary</option>

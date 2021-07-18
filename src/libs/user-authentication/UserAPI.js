@@ -14,7 +14,6 @@ const UserAPI = {
       const response = await API.get("/", {
         headers: {Authorization: `Bearer ${token}`},
       });
-      console.log(response);
       return response;
     } catch (e) {
       console.error(e.response);
@@ -22,17 +21,11 @@ const UserAPI = {
     }
   },
 
-  setUserName: async (name) => {
+  setUserData: async (userData, token) => {
     try {
-      const response = await API.post(
-        "/",
-        {
-          name: name,
-        },
-        {
-          headers: {Authorization: `Bearer ${currentToken}`},
-        }
-      );
+      const response = await API.post("/", userData, {
+        headers: {Authorization: `Bearer ${token}`},
+      });
       return response;
     } catch (e) {
       console.error(e.response);

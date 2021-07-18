@@ -10,17 +10,23 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import {useFormik} from "formik";
 import * as Yup from "yup";
 import {useAppData} from "../providers/UserProvider";
+import UserAPI from "libs/user-authentication/UserAPI";
 
 export default function Login() {
   const app = useAppData();
+  const history = useHistory();
   const schema = Yup.object().shape({
     email: Yup.string()
       .required("this field cannot be empty")
       .email("please input a proper email"),
+    name: Yup.string().required("this field cannot be empty"),
+    phoneNumber: Yup.string().required("this field cannot be empty"),
+    businessName: Yup.string().required("this field cannot be empty"),
+    businessType: Yup.string().required("this field cannot be empty"),
     password: Yup.string().required("this field cannot be empty"),
     passwordConfirm: Yup.string()
       .required("this field cannot be empty")
@@ -31,16 +37,27 @@ export default function Login() {
     email: "",
     password: "",
     passwordConfirm: "",
+    name: "",
+    phoneNumber: "",
+    businessName: "",
+    businessType: "",
   };
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
-    validateOnBlur: true,
-    validateOnChange: true,
-    onSubmit: ({email, password}, {setErrors}) => {
+    onSubmit: ({email, password, ...rest}, {setErrors}) => {
       app
         .auth()
         .createUserWithEmailAndPassword(email, password)
+        .then((res) => {
+          res.user.updateProfile({
+            displayName: rest.name,
+          });
+          res.user.getIdToken().then((token) => {
+            UserAPI.setUserData(rest, token);
+          });
+          history.replace("/");
+        })
         .catch((e) => {
           console.error(e);
           if (!e.code) return;
@@ -71,6 +88,85 @@ export default function Login() {
                 <Row>
                   <Col>
                     <FormGroup>
+                      <label>Name</label>
+                      <Input
+                        id="name"
+                        name="name"
+                        onChange={formik.handleChange}
+                        invalid={formik.errors.name}
+                        placeholder="Name"
+                        type="text"
+                        value={formik.values.name}
+                      />
+                      <p className="mt-n3 text-warning">{formik.errors.name}</p>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label>Phone Number</label>
+                      <Input
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        onChange={formik.handleChange}
+                        invalid={formik.errors.phoneNumber}
+                        placeholder="Phone Number"
+                        type="text"
+                        value={formik.values.phoneNumber}
+                      />
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.phoneNumber}
+                      </p>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label>Business Name</label>
+                      <Input
+                        id="businessName"
+                        name="businessName"
+                        onChange={formik.handleChange}
+                        invalid={formik.errors.businessName}
+                        placeholder="Name"
+                        type="text"
+                        value={formik.values.businessName}
+                      />
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.businessName}
+                      </p>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <FormGroup>
+                      <label>Business Industry</label>
+                      <Input
+                        id="businessType"
+                        name="businessType"
+                        type="select"
+                        onChange={formik.handleChange}
+                      >
+                        <option>Technology</option>
+                        <option>Tech Startup</option>
+                        <option>Goods & Services</option>
+                        <option>Tourism</option>
+                        <option>Cullinary</option>
+                        <option>Academic Institute</option>
+                        <option>Others</option>
+                      </Input>
+                      <p className="mt-n3 text-warning">
+                        {formik.errors.businessType}
+                      </p>
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <FormGroup>
                       <label>Email</label>
                       <Input
                         id="email"
@@ -80,7 +176,7 @@ export default function Login() {
                           formik.handleChange(e);
                         }}
                         invalid={formik.errors.email}
-                        placeholder="Username"
+                        placeholder="example@domain.com"
                         type="text"
                         value={formik.values.email}
                       />

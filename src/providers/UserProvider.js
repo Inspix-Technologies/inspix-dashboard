@@ -18,7 +18,6 @@ var firebaseConfig = {
 };
 
 export default function UserProvider({children}) {
-  const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userData, setUserData] = useState({});
   const [app, setApp] = useState(null);
@@ -30,16 +29,15 @@ export default function UserProvider({children}) {
       if (user) {
         const idToken = await user.getIdToken();
         setUserToken(user);
+        console.log(idToken);
         try {
           const userData = await UserAPI.getUserData(idToken);
           if (userData.status === 403) throw userData;
           setUserData(userData.data);
         } catch (e) {
           const code = e.data.code;
+          console.error(e.response);
           if (!code) return console.error(e.response);
-          if (code === 4) {
-            history.push("/insert-name");
-          }
         }
         setIsLoggedIn(true);
         return;

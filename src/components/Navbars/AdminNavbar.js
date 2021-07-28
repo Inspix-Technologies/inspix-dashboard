@@ -38,9 +38,9 @@ import {
   NavbarToggler,
   ModalHeader,
 } from "reactstrap";
-import {useUserData} from "providers/UserProvider";
-import {useHistory, Link} from "react-router-dom";
-import {useAppData} from "providers/UserProvider";
+import { useUserData } from "providers/UserProvider";
+import { useHistory, Link } from "react-router-dom";
+import { useAppData } from "providers/UserProvider";
 
 function AdminNavbar(props) {
   const [collapseOpen, setcollapseOpen] = React.useState(false);
@@ -121,25 +121,40 @@ function AdminNavbar(props) {
                   </Link>
                 </InputGroup>
               ) : (
-                <UncontrolledDropdown nav>
-                  <DropdownToggle
-                    caret
-                    color="default"
-                    data-toggle="dropdown"
-                    nav
+                <>
+                  <InputGroup
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      height: "2.65rem",
+                    }}
                   >
-                    <p>{userData.name}</p>
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    <NavLink tag="li">
-                      <DropdownItem className="nav-item" onClick={logout}>
-                        Logout
-                      </DropdownItem>
-                    </NavLink>
-                  </DropdownMenu>
-                </UncontrolledDropdown>
+                    <Link to="/admin/funds">
+                      <p>Rp. 300.000</p>
+                      {/* //TODO: integrate actual fund */}
+                    </Link>
+                  </InputGroup>
+                  <UncontrolledDropdown nav>
+                    <DropdownToggle
+                      caret
+                      color="default"
+                      data-toggle="dropdown"
+                      nav
+                    >
+                      <p>{userData.name}</p>
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-navbar" right tag="ul">
+                      <NavLink tag="li">
+                        <DropdownItem className="nav-item" onClick={logout}>
+                          Logout
+                        </DropdownItem>
+                      </NavLink>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                </>
               )}
-              <UncontrolledDropdown nav>
+
+              {/* <UncontrolledDropdown nav>
                 <DropdownToggle
                   caret
                   color="default"
@@ -150,62 +165,11 @@ function AdminNavbar(props) {
                   <i className="tim-icons icon-bell-55" />
                   <p className="d-lg-none">Notifications</p>
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  {/* <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Mike John responded to your email
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      You have 5 more tasks
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Your friend Michael is in town
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another notification
-                    </DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">
-                      Another one
-                    </DropdownItem>
-                  </NavLink> */}
-                </DropdownMenu>
-              </UncontrolledDropdown>
-              {/* <UncontrolledDropdown nav>
-                <DropdownToggle
-                  caret
-                  color="default"
-                  nav
-                  onClick={(e) => e.preventDefault()}
-                >
-                  <div className="photo">
-                    <img
-                      alt="..."
-                      src={require("assets/img/anime3.png").default}
-                    />
-                  </div>
-                  <b className="caret d-none d-lg-block d-xl-block" />
-                  <p className="d-lg-none">Log out</p>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-navbar" right tag="ul">
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Profile</DropdownItem>
-                  </NavLink>
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Settings</DropdownItem>
-                  </NavLink>
-                  <DropdownItem divider tag="li" />
-                  <NavLink tag="li">
-                    <DropdownItem className="nav-item">Log out</DropdownItem>
-                  </NavLink>
-                </DropdownMenu>
+                <DropdownMenu
+                  className="dropdown-navbar"
+                  right
+                  tag="ul"
+                ></DropdownMenu>
               </UncontrolledDropdown> */}
               <li className="separator d-lg-none" />
             </Nav>

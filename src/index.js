@@ -32,11 +32,13 @@ import BackgroundColorWrapper from "./components/BackgroundColorWrapper/Backgrou
 import UserProvider from "./providers/UserProvider";
 import InsertName from "views/credentials/InsertName";
 import APIKeyProvider from "providers/APIKeyProvider";
+import Login from "views/Login";
+import Register from "views/Register";
 
 ReactDOM.render(
   <ThemeContextWrapper>
     <BackgroundColorWrapper>
-      <BrowserRouter>
+      <BrowserRouter basename="/">
         <UserProvider>
           <APIKeyProvider>
             <Switch>
@@ -48,6 +50,11 @@ ReactDOM.render(
               <Route
                 path="/insert-name"
                 render={(props) => <InsertName {...props} />}
+              />
+              <Route path="/login" render={(props) => <Login {...props} />} />
+              <Route
+                path="/register"
+                render={(props) => <Register {...props} />}
               />
               <Redirect from="/" to="/admin/dashboard" />
             </Switch>

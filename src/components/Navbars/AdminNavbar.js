@@ -130,7 +130,7 @@ function AdminNavbar(props) {
                     }}
                   >
                     <Link to="/admin/funds">
-                      <p>Rp. 300.000</p>
+                      <p>Rp. {userData.funds}</p>
                       {/* //TODO: integrate actual fund */}
                     </Link>
                   </InputGroup>

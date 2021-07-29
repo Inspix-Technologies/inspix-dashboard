@@ -17,7 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import {BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import AdminLayout from "layouts/Admin/Admin.js";
 import RTLLayout from "layouts/RTL/RTL.js";
@@ -31,24 +31,27 @@ import ThemeContextWrapper from "./components/ThemeWrapper/ThemeWrapper";
 import BackgroundColorWrapper from "./components/BackgroundColorWrapper/BackgroundColorWrapper";
 import UserProvider from "./providers/UserProvider";
 import InsertName from "views/credentials/InsertName";
+import APIKeyProvider from "providers/APIKeyProvider";
 
 ReactDOM.render(
   <ThemeContextWrapper>
     <BackgroundColorWrapper>
       <BrowserRouter>
         <UserProvider>
-          <Switch>
-            <Route
-              path="/admin"
-              render={(props) => <AdminLayout {...props} />}
-            />
-            <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
-            <Route
-              path="/insert-name"
-              render={(props) => <InsertName {...props} />}
-            />
-            <Redirect from="/" to="/admin/dashboard" />
-          </Switch>
+          <APIKeyProvider>
+            <Switch>
+              <Route
+                path="/admin"
+                render={(props) => <AdminLayout {...props} />}
+              />
+              <Route path="/rtl" render={(props) => <RTLLayout {...props} />} />
+              <Route
+                path="/insert-name"
+                render={(props) => <InsertName {...props} />}
+              />
+              <Redirect from="/" to="/admin/dashboard" />
+            </Switch>
+          </APIKeyProvider>
         </UserProvider>
       </BrowserRouter>
     </BackgroundColorWrapper>

@@ -10,10 +10,10 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import {Link, useHistory} from "react-router-dom";
-import {useFormik} from "formik";
+import { Link, useHistory } from "react-router-dom";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {useAppData} from "../providers/UserProvider";
+import { useAppData } from "../providers/UserProvider";
 import UserAPI from "libs/user-authentication/UserAPI";
 
 export default function Login() {
@@ -45,7 +45,7 @@ export default function Login() {
   const formik = useFormik({
     initialValues,
     validationSchema: schema,
-    onSubmit: ({email, password, ...rest}, {setErrors}) => {
+    onSubmit: ({ email, password, ...rest }, { setErrors }) => {
       app
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -63,10 +63,12 @@ export default function Login() {
           if (!e.code) return;
           switch (e.code) {
             case "auth/email-already-in-use":
-              setErrors({email: "email already used by another account"});
+              setErrors({ email: "email already used by another account" });
               break;
             case "auth/weak-password":
-              setErrors({password: "password should be at least 6 characters"});
+              setErrors({
+                password: "password should be at least 6 characters",
+              });
               break;
             default:
               break;
@@ -76,8 +78,23 @@ export default function Login() {
   });
 
   return (
-    <div className="content">
-      <Row className="justify-content-center">
+    <div
+      className="content"
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        overflowX: "hidden",
+      }}
+    >
+      <Row
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
         <Col xs={12} sm={10} md={8} lg={6}>
           <Card className="p-3">
             <CardHeader>
@@ -237,7 +254,7 @@ export default function Login() {
                 </Row>
                 <Row>
                   <Col className="text-center">
-                    <Link to="/admin/login">Already have an account</Link>
+                    <Link to="/login">Already have an account</Link>
                   </Col>
                 </Row>
               </Form>

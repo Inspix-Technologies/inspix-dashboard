@@ -30,7 +30,7 @@ import Login from "views/Login";
 import NewCamera from "views/cameras/NewCamera";
 import ManageCameras from "views/cameras/ManageCameras";
 import WatchCamera from "views/cameras/WatchCamera";
-import Funds from "views/Funds";
+import Funds from "views/funds/Funds";
 import APIKeys from "views/apikeys/APIKeys";
 
 var routes = [

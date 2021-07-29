@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 
 export default function APIKeys() {
-  const apiKeys = useApiKeys();
+  const { apiKeys, createAPIKey, invalidateAPIKey } = useApiKeys();
 
   return (
     <div className="content">
@@ -34,12 +34,21 @@ export default function APIKeys() {
                     <tr>
                       <td style={{ maxWidth: "10rem" }}>{key}</td>
                       <td>
-                        <Button className="btn-link p-0">Invalidate</Button>
+                        <Button
+                          className="btn-link p-0"
+                          color="danger"
+                          onClick={invalidateAPIKey(key)}
+                        >
+                          Invalidate
+                        </Button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
+              <Button color="primary" onClick={createAPIKey}>
+                New API Key
+              </Button>
             </CardBody>
           </Card>
         </Col>

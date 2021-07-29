@@ -30,6 +30,8 @@ import Login from "views/Login";
 import NewCamera from "views/cameras/NewCamera";
 import ManageCameras from "views/cameras/ManageCameras";
 import WatchCamera from "views/cameras/WatchCamera";
+import Funds from "views/Funds";
+import APIKeys from "views/apikeys/APIKeys";
 
 var routes = [
   {
@@ -38,6 +40,13 @@ var routes = [
     rtlName: "لوحة القيادة",
     icon: "tim-icons icon-chart-pie-36",
     component: ComingSoon,
+    layout: "/admin",
+  },
+  {
+    path: "/apikeys",
+    name: "API Keys",
+    icon: "tim-icons icon-key-25",
+    component: APIKeys,
     layout: "/admin",
   },
   {
@@ -103,6 +112,13 @@ var routes = [
     component: Register,
     layout: "/admin",
     hide: true,
+  },
+  {
+    path: "/funds",
+    layout: "/admin",
+    name: "Funds",
+    hide: true,
+    component: Funds,
   },
 ];
 export default routes;

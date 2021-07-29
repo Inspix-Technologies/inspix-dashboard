@@ -1,6 +1,7 @@
 {
   "name": "black-dashboard-react",
   "version": "1.2.0",
+  "homepage": ".",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.1",

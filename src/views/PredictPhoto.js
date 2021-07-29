@@ -1,14 +1,25 @@
-import React, {useRef, useState} from "react";
-import {Row, Col, Card, CardHeader, CardBody, Form, Button} from "reactstrap";
+import React, { useRef, useState } from "react";
+import {
+  Row,
+  Col,
+  Card,
+  CardHeader,
+  CardBody,
+  Form,
+  Button,
+  Input,
+} from "reactstrap";
 import NotificationAlert from "react-notification-alert";
 
 import axios from "axios";
-import {convertToBase64} from "libs/base64/base64-preprocessor";
+import { convertToBase64 } from "libs/base64/base64-preprocessor";
 import drawBoundingBox from "libs/bounding-box/bbox-creator";
 import SyntaxHighliter from "react-syntax-highlighter";
 import a11y from "react-syntax-highlighter/dist/esm/styles/hljs/night-owl";
-import {useUserToken} from "providers/UserProvider";
-import {Redirect} from "react-router-dom";
+import { useUserToken } from "providers/UserProvider";
+import { Redirect } from "react-router-dom";
+import { useUserData } from "providers/UserProvider";
+import baseAxios from "libs/main-api/MainAPI";
 
 export default function PredictPhoto() {
   const uploadImageRef = useRef(null);
@@ -19,25 +30,39 @@ export default function PredictPhoto() {
   const [imageUrl, setImageUrl] = useState();
   const [apiReturn, setApiReturn] = useState("");
   const [apiRequest, setApiRequest] = useState("");
-  const [isLoggedIn, userToken] = useUserToken();
+  const [apiKey, setApiKey] = useState("");
+  const [isLoggedIn] = useUserToken();
+  const [userData, setUserData] = useUserData();
 
   const handlePredictImage = (e) => {
     e.preventDefault();
-    if (fileName === "") return;
+    if (fileName === "" || !apiKey) return;
     const base64img = convertToBase64(imgRef);
     setApiRequest(
-      JSON.stringify({base64image: `${base64img.slice(0, 100)}...`}, null, 2)
+      JSON.stringify({ base64image: `${base64img.slice(0, 100)}...` }, null, 2)
     );
     setApiReturn("");
-    axios
-      .post("http://localhost:8001/inspix-models/test", {
-        base64image: base64img,
-      })
+    baseAxios
+      .post(
+        `/predict`,
+        {
+          base64image: base64img,
+        },
+        {
+          headers: { ["inspix-api-key"]: apiKey },
+        }
+      )
       .then((res) => {
         setApiReturn(res.data);
         drawBoundingBox(imgRef, canvasRef, res.data);
+        setUserData({ ...userData, funds: userData.funds - 10 });
       })
       .catch((e) => {
+        if (e.response) {
+          console.error(e.response);
+        } else {
+          console.error(e);
+        }
         notificationRef.current.notificationAlert({
           place: "br",
           type: "danger",
@@ -151,7 +176,18 @@ export default function PredictPhoto() {
                 </Row>
                 <Row className="mt-5">
                   <Col xs={12}>
-                    <h2>Demonstration</h2>
+                    <h5>API Key</h5>
+                    <div>
+                      <Input
+                        color="primary"
+                        value={apiKey}
+                        onChange={(e) => setApiKey(e.target.value)}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col xs={12}>
                     <h5>API Request</h5>
                     <div>
                       <SyntaxHighliter
@@ -172,7 +208,7 @@ export default function PredictPhoto() {
                     <div
                       style={{
                         maxHeight: "20rem",
-                        overflowY: "scroll",
+                        overflowY: "auto",
                       }}
                     >
                       <SyntaxHighliter language="json" style={a11y}>

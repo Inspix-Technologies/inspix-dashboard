@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import {
   Row,
   Col,
@@ -10,11 +10,11 @@ import {
   Input,
   Button,
 } from "reactstrap";
-import {Link, useHistory} from "react-router-dom";
-import {useFormik} from "formik";
+import { Link, useHistory } from "react-router-dom";
+import { useFormik } from "formik";
 import * as Yup from "yup";
-import {useUserToken} from "providers/UserProvider";
-import {useAppData} from "providers/UserProvider";
+import { useUserToken } from "providers/UserProvider";
+import { useAppData } from "providers/UserProvider";
 
 export default function Login() {
   const [isLoggedIn] = useUserToken();
@@ -44,7 +44,7 @@ export default function Login() {
     validationSchema: schema,
     validateOnBlur: true,
     validateOnChange: true,
-    onSubmit: ({email, password}, {setErrors}) => {
+    onSubmit: ({ email, password }, { setErrors }) => {
       app
         .auth()
         .signInWithEmailAndPassword(email, password)
@@ -61,8 +61,22 @@ export default function Login() {
   });
 
   return (
-    <div className="content">
-      <Row className="justify-content-center">
+    <div
+      className="content"
+      style={{
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+      }}
+    >
+      <Row
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          width: "100vw",
+        }}
+      >
         <Col xs={12} sm={10} md={8} lg={6}>
           <Card className="p-3">
             <CardHeader>
@@ -124,7 +138,7 @@ export default function Login() {
                 </Row>
                 <Row>
                   <Col className="text-center">
-                    <Link to="/admin/register">Create your account</Link>
+                    <Link to="/register">Create your account</Link>
                   </Col>
                 </Row>
               </Form>

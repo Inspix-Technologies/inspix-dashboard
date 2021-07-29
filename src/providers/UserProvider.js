@@ -43,11 +43,12 @@ export default function UserProvider({ children }) {
           setIsLoggedIn(true);
           return;
         }, 500);
+      } else {
+        console.log("logged out");
+        setIsLoggedIn(false);
+        setUserData({});
+        setUserToken({});
       }
-      console.log("logged out");
-      setIsLoggedIn(false);
-      setUserData({});
-      setUserToken({});
     });
   }, []);
 

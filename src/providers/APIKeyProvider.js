@@ -22,7 +22,7 @@ export const useApiKeys = () => {
     (async () => {
       try {
         const updatedKeys = await axios.get(
-          `http://localhost:8000/apikey?uid=${userToken.uid}`
+          `http://172.200.0.2/apikey?uid=${userToken.uid}`
         ); //TODO: where to get the API keys by userUid
         console.log(updatedKeys);
         setApiKeys(updatedKeys.data);
@@ -31,7 +31,32 @@ export const useApiKeys = () => {
         console.error(e);
       }
     })();
-  }, []);
+  }, [isLoggedIn]);
 
-  return apiKeys;
+  const createAPIKey = async () => {
+    try {
+      const response = await axios.post(`http://172.200.0.2/apikey`, {
+        userUid: userToken.uid,
+      });
+      setApiKeys([...apiKeys, response.data.apiKey]);
+    } catch (e) {
+      if (e.response) return console.error(e);
+      console.error(e);
+    }
+  };
+
+  const invalidateAPIKey = (apiKey) => async () => {
+    try {
+      await axios.post(`http://172.200.0.2/apikey/invalidate`, {
+        userUid: userToken.uid,
+        key: apiKey,
+      });
+      setApiKeys([...apiKeys.filter((key) => key !== apiKey)]);
+    } catch (e) {
+      if (e.response) return console.error(e);
+      console.error(e);
+    }
+  };
+
+  return { apiKeys: apiKeys, createAPIKey: createAPIKey, invalidateAPIKey };
 };

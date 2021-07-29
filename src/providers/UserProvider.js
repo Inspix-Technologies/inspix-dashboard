@@ -1,7 +1,7 @@
-import React, {createContext, useState, useContext, useEffect} from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import firebase from "firebase";
 import UserAPI from "../libs/user-authentication/UserAPI";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const UserContext = createContext();
 const AppContext = createContext();
@@ -17,7 +17,7 @@ var firebaseConfig = {
   measurementId: "G-H8ZYB943NK",
 };
 
-export default function UserProvider({children}) {
+export default function UserProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userData, setUserData] = useState({});
   const [app, setApp] = useState(null);
@@ -27,20 +27,22 @@ export default function UserProvider({children}) {
     setApp(firebase.initializeApp(firebaseConfig));
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user) {
-        const idToken = await user.getIdToken();
-        setUserToken(user);
-        console.log(idToken);
-        try {
-          const userData = await UserAPI.getUserData(idToken);
-          if (userData.status === 403) throw userData;
-          setUserData(userData.data);
-        } catch (e) {
-          const code = e.data.code;
-          console.error(e.response);
-          if (!code) return console.error(e.response);
-        }
-        setIsLoggedIn(true);
-        return;
+        setTimeout(async () => {
+          const idToken = await user.getIdToken();
+          setUserToken(user);
+          console.log(idToken);
+          try {
+            const userData = await UserAPI.getUserData(idToken);
+            if (userData.status === 403) throw userData;
+            setUserData(userData.data);
+          } catch (e) {
+            const code = e.data.code;
+            console.error(e.response);
+            if (!code) return console.error(e.response);
+          }
+          setIsLoggedIn(true);
+          return;
+        }, 500);
       }
       console.log("logged out");
       setIsLoggedIn(false);

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const baseAxios = axios.create({
-  baseURL: "http://172.200.0.2",
+  baseURL: "http://dashboard.inspix.tech:8000",
   withCredentials: true,
 });
 

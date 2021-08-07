@@ -50,11 +50,25 @@ import {
   chartExample4,
 } from "variables/charts.js";
 import useAnalyticData from "libs/inspix-analytic/useAnalyticData";
+import axios from "axios";
 
 function Dashboard(props) {
   const [bigChartData, setbigChartData] = React.useState("data1");
   const [dataset, setDataset] = useState([]);
   const analyticsData = useAnalyticData([1, 2, 12, 5]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log("TEMBAKKK")
+        const ress = await axios.get('http://27.112.78.163:8000/test')
+        console.log(ress);
+      } catch (e) {
+        console.error(e);
+      }
+    })()
+  }, [])
+
   useEffect(() => {
     const refinedData = (gradientStroke) => ({
       labels: [...new Set(analyticsData.map((data) => data.predictionDate))],

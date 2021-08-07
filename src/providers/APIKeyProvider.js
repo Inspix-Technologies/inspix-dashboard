@@ -22,7 +22,7 @@ export const useApiKeys = () => {
     (async () => {
       try {
         const updatedKeys = await axios.get(
-          `http://172.200.0.2/apikey?uid=${userToken.uid}`
+          `http://27.112.78.163:8000/apikey?uid=${userToken.uid}`
         ); //TODO: where to get the API keys by userUid
         console.log(updatedKeys);
         setApiKeys(updatedKeys.data);
@@ -35,7 +35,7 @@ export const useApiKeys = () => {
 
   const createAPIKey = async () => {
     try {
-      const response = await axios.post(`http://172.200.0.2/apikey`, {
+      const response = await axios.post(`http://27.112.78.163:8000/apikey`, {
         userUid: userToken.uid,
       });
       setApiKeys([...apiKeys, response.data.apiKey]);
@@ -47,7 +47,7 @@ export const useApiKeys = () => {
 
   const invalidateAPIKey = (apiKey) => async () => {
     try {
-      await axios.post(`http://172.200.0.2/apikey/invalidate`, {
+      await axios.post(`http://27.112.78.163:8000/apikey/invalidate`, {
         userUid: userToken.uid,
         key: apiKey,
       });

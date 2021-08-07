@@ -38,7 +38,7 @@ import Register from "views/Register";
 ReactDOM.render(
   <ThemeContextWrapper>
     <BackgroundColorWrapper>
-      <BrowserRouter basename="/">
+      <BrowserRouter>
         <UserProvider>
           <APIKeyProvider>
             <Switch>

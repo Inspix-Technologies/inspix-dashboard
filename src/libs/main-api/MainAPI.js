@@ -1,7 +1,10 @@
 import axios from "axios";
+import getConfig from "config.global";
+
+const CONFIG = getConfig()
 
 const baseAxios = axios.create({
-  baseURL: "http://dashboard.inspix.tech:8000",
+  baseURL: CONFIG.BACKEND_URL,
   withCredentials: true,
 });
 

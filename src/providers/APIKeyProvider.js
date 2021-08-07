@@ -1,5 +1,5 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
+import baseAxios from "libs/main-api/MainAPI";
 import { useUserToken } from "./UserProvider";
 
 const APIKeyContext = React.createContext();
@@ -21,9 +21,10 @@ export const useApiKeys = () => {
     if (isLoggedIn === null || isLoggedIn === false) return;
     (async () => {
       try {
-        const updatedKeys = await axios.get(
-          `http://27.112.78.163:8000/apikey?uid=${userToken.uid}`
-        ); //TODO: where to get the API keys by userUid
+        // const updatedKeys = await axios.get(
+        //   `http://27.112.78.163:8000/apikey?uid=${userToken.uid}`
+        // ); //TODO: where to get the API keys by userUid
+        const updatedKeys = await baseAxios.get(`/apikey?uid=${userToken.uid}`)
         console.log(updatedKeys);
         setApiKeys(updatedKeys.data);
       } catch (e) {
@@ -35,9 +36,10 @@ export const useApiKeys = () => {
 
   const createAPIKey = async () => {
     try {
-      const response = await axios.post(`http://27.112.78.163:8000/apikey`, {
-        userUid: userToken.uid,
-      });
+      // const response = await axios.post(`http://27.112.78.163:8000/apikey`, {
+      //   userUid: userToken.uid,
+      // });
+      const response = await baseAxios.post(`/apikey`, {userUid: userToken.uid})
       setApiKeys([...apiKeys, response.data.apiKey]);
     } catch (e) {
       if (e.response) return console.error(e);
@@ -47,10 +49,14 @@ export const useApiKeys = () => {
 
   const invalidateAPIKey = (apiKey) => async () => {
     try {
-      await axios.post(`http://27.112.78.163:8000/apikey/invalidate`, {
+      // await axios.post(`http://27.112.78.163:8000/apikey/invalidate`, {
+      //   userUid: userToken.uid,
+      //   key: apiKey,
+      // });
+      await baseAxios.post(`/apikey/invalidate`, {
         userUid: userToken.uid,
-        key: apiKey,
-      });
+        key: apiKey
+      })
       setApiKeys([...apiKeys.filter((key) => key !== apiKey)]);
     } catch (e) {
       if (e.response) return console.error(e);

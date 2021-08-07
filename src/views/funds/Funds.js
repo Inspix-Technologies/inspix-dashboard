@@ -1,4 +1,3 @@
-import axios from "axios";
 import baseAxios from "libs/main-api/MainAPI";
 import { useUserData } from "providers/UserProvider";
 import { useUserToken } from "providers/UserProvider";

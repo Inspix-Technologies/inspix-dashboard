@@ -11,7 +11,6 @@ import {
 } from "reactstrap";
 import NotificationAlert from "react-notification-alert";
 
-import axios from "axios";
 import { convertToBase64 } from "libs/base64/base64-preprocessor";
 import drawBoundingBox from "libs/bounding-box/bbox-creator";
 import SyntaxHighliter from "react-syntax-highlighter";
